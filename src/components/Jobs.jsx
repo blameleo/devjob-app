@@ -1,14 +1,20 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import data from '../data.json'
 import Job from './Job';
 
-const Jobs = () => {
-    console.log(data);
+const Jobs = ({setJobs,setSearchResults,searchResults}) => {
+
+
+  useEffect(()=>{
+    setJobs(data)
+    setSearchResults(data)
+      },[])
+    
   return (
  
     <div className='grid sm:grid-cols-2 lg:grid-cols-3 mt-16  w-10/12 mx-auto'>
       {
-        data.map((job,index)=>{
+        searchResults.map((job,index)=>{
             return <Job key={index} data={job}/>
         })
       }

@@ -5,7 +5,10 @@ module.exports = {
     extend: {
       colors: {
         primary: '#5964E0',
-      
+      dark_blue: '#19202D',
+      midnight: '#121721',
+      dark_gray: '#6E8098',
+      light_primary: '#939BF4'
       },
       backgroundImage: {
         header_image: "url('/public/assets/desktop/bg-pattern-header.svg')",
