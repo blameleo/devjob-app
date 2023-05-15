@@ -4,11 +4,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#5964E0'
+        primary: '#5964E0',
+      
       },
       backgroundImage: {
-        header_image: "url('/src/assets/desktop/bg-pattern-header.svg')",
-        header_image_mobile: "url('/src/assets/mobile/bg-pattern-header.svg')",
+        header_image: "url('/public/assets/desktop/bg-pattern-header.svg')",
+        header_image_mobile: "url('/public/assets/mobile/bg-pattern-header.svg')",
       },
     },
   },
