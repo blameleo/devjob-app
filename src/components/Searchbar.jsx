@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { MdFilterAlt, MdSearch } from "react-icons/md";
 import { MdLocationOn } from "react-icons/md";
 import { ThemeToggler } from "../context/ThemeContext";
-import Checkbox from "@mui/material/Checkbox";
-import { pink } from "@mui/material/colors";
+import Modal from 'react-modal'
+
 
 function Searchbar({ jobs, setSearchResults }) {
   const { darkMode } = ThemeToggler();
@@ -50,29 +50,132 @@ function Searchbar({ jobs, setSearchResults }) {
       return setSearchResults(jobs);
     } else {
       const resultsArray = jobs.filter(job =>{
-        return job.position.includes(searchData.title) && job.location.includes(searchData.location) && job.contract.includes(searchData.fullTime )});
+        return job.position.toLowerCase().includes(searchData.title.toLowerCase()) && job.location.toLowerCase().includes(searchData.location.toLowerCase()) && job.contract.includes(searchData.fullTime )});
       setSearchResults(resultsArray);
       console.log(searchData);
 
     }
 
+    closeModal()
+
   };
 
+ 
+    let subtitle;
+    const [modalIsOpen, setIsOpen] = React.useState(false);
+
+    const customStyles = {
+      content: {
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)',
+        paddingLeft: 0,
+        paddingRight: 0,
+        paddingTop: 20,
+        paddingBottom:30,
+        width: 350,
+        backgroundColor: `${darkMode?'#19202D':'white'}`,
+        border: 'none'
+        
+      },
+
+      overlay: {
+        backgroundColor: 'rgba(0, 0, 0, 0.8)'
+      }
+
+
+    };
+  
+    function openModal() {
+      setIsOpen(true);
+    }
+  
+    function afterOpenModal() {
+      // references are now sync'd and can be accessed.
+      // subtitle.style.color = 'white';
+    }
+  
+    function closeModal() {
+      setIsOpen(false);
+    }
+
   return (
-    <form
+    <div>
+
+<Modal
+        isOpen={modalIsOpen}
+        onAfterOpen={afterOpenModal}
+        onRequestClose={closeModal}
+        style={customStyles}
+        contentLabel="Example Modal"
+      >
+        <label
+        htmlFor=""
+        className={
+          darkMode
+            ? "flex  pb-3 sm:flex  items-center  lg:w-4/12   border-b border-b-gray-600 h-full"
+            : "flex  pb-3 sm:flex  items-center  lg:w-4/12   border-b h-full"
+        }
+      >
+        <MdLocationOn className="text-3xl mx-2 text-primary" />
+        <input
+          type="text"
+          value={searchData.location}
+          onChange={handleChange}
+          name="location"
+          className={
+            darkMode
+              ? "bg-dark_blue  h-full outline-none placeholder:truncate text-white"
+              : "  h-full outline-none placeholder:truncate"
+          }
+          placeholder="Filter by location..."
+        />
+      </label>
+      <div className="w-full px-5 ">
+        <div className="flex py-3 items-center ">
+          <input
+            type="checkbox"
+            name="fullTime"
+            defaultValue={searchData.fullTime}
+            onChange={handleContract}
+            className="w-4 h-4 text-blue-600 bg-gray-500  rounded  "
+          />{" "}
+          {/* <Checkbox sx={{ baclcolor: pink[800] }} /> */}
+          <span
+            className={
+              darkMode
+                ? "pl-3 font-semibold sm:text-sm text-white"
+                : "pl-3 font-semibold sm:text-sm"
+            }
+          >
+            Full Time Only
+          </span>
+        </div>
+   
+        <button onClick={handleSubmit} className="w-full hover:bg-light_primary  bg-primary text-white py-3 rounded-lg">
+          search
+        </button>
+ 
+      </div>
+        </Modal>
+
+<form
       onSubmit={handleSubmit}
       className={
         darkMode
-          ? `bg-dark_blue mt-16 rounded-xl w-10/12 mx-auto h-16 flex items-center  text-black `
-          : ` mt-16 rounded-xl w-10/12 mx-auto h-16 flex items-center bg-white text-black`
+          ? `bg-dark_blue relative -top-24 mt-16 rounded-xl w-10/12 mx-auto h-16 flex items-center   text-black `
+          : `relative -top-24  mt-16 rounded-xl w-10/12 mx-auto  h-16 -mb-10 flex items-center bg-white text-black`
       }
     >
       <label
         htmlFor=""
         className={
           darkMode
-            ? "w-8/12 sm:w-5/12 lg:w-6/12 flex items-center border-r-dark_gray    sm:border-r h-full"
-            : "w-8/12 sm:w-5/12 lg:w-6/12 flex items-center     sm:border-r h-full"
+            ? "w-8/12 sm:w-5/12 lg:w-6/12 flex items-center border-r-gray-700    sm:border-r h-full"
+            : "w-8/12 sm:w-5/12  lg:w-6/12 flex items-center     sm:border-r h-full"
         }
       >
         <MdSearch className="hidden sm:block text-3xl mx-2 text-primary" />
@@ -93,7 +196,7 @@ function Searchbar({ jobs, setSearchResults }) {
         htmlFor=""
         className={
           darkMode
-            ? "w-5/12 sm:flex hidden items-center  lg:w-4/12 border-r-dark_gray   border-r h-full"
+            ? "w-5/12 sm:flex hidden items-center  lg:w-4/12 border-r-gray-700   border-r h-full"
             : "w-5/12 sm:flex hidden items-center  lg:w-4/12   border-r h-full"
         }
       >
@@ -133,6 +236,7 @@ function Searchbar({ jobs, setSearchResults }) {
         </div>
         <button className="sm:hidden">
           <MdFilterAlt
+          onClick={openModal}
             className={
               darkMode ? "text-3xl text-white" : "text-3xl text-gray-600"
             }
@@ -146,6 +250,8 @@ function Searchbar({ jobs, setSearchResults }) {
         </button>
       </div>
     </form>
+    </div>
+    
   );
 }
 
