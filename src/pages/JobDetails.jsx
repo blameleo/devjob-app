@@ -10,7 +10,7 @@ const JobDetails = () => {
   const jobId = parseInt(id);
 
   const { darkMode } = ThemeToggler();
-
+s
   return (
     <div className={darkMode ? "bg-midnight " : "bg-gray-100 "}>
       <Header />
