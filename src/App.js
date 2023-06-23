@@ -3,6 +3,7 @@ import Home from "./pages/Home";
 import JobDetails from "./pages/JobDetails";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import RecruiterDashboard from "./admin/pages/RecruiterDashboard";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/jobdetails/:id" element={<JobDetails />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/recruiterhome/*" element={<RecruiterDashboard />} />
       </Routes>
     </Router>
   );
