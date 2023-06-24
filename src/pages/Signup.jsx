@@ -3,12 +3,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { UserAuth } from "../context/AuthContext";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import { useDispatch } from "react-redux";
 import * as Yup from "yup";
+import { addUser } from "../redux/JobSlice";
 
 export default function Signup() {
   const [error, setError] = useState("");
   const [info, setInfo] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const initialValues = {
     type: "individual",
@@ -39,6 +42,7 @@ export default function Signup() {
     console.log(values);
     resetForm();
     setError("");
+    dispatch(addUser(values));
 
     try {
       await createUser(values.email, values.password);

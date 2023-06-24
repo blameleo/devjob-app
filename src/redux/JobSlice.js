@@ -5,6 +5,8 @@ import { collection, addDoc } from "firebase/firestore";
 
 const jobsCollectionRef = collection(db, "jobs");
 
+const usersCollectionRef = collection(db, "users");
+
 const initialState = {
   jobs: [],
 };
@@ -21,12 +23,20 @@ export const JobSlice = createSlice({
       }
     },
 
+    addUser: async (state, action) => {
+      try {
+        await addDoc(usersCollectionRef, action.payload);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
     editJob: (state, action) => {},
 
     deleteJob: (state, action) => {},
   },
 });
 
-export const { addJob, editJob, deleteJob } = JobSlice.actions;
+export const { addJob, editJob, deleteJob, addUser } = JobSlice.actions;
 
 export default JobSlice.reducer;
