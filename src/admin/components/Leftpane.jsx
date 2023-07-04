@@ -6,8 +6,8 @@ import { BiUser } from "react-icons/bi";
 
 export default function Leftpane() {
   return (
-    <div className="bg-white col-span-3  ">
-      <h1 className="text-2xl font-black pl-5 border h-[50px]">Devjobs</h1>
+    <div className="bg-white col-span-2  h-full  ">
+      <h1 className="sm:text-2xl font-black pl-5 border h-[50px]">Devjobs</h1>
 
       <div className="mt-10">
         <Tabs

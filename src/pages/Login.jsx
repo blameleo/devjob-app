@@ -21,7 +21,14 @@ export default function Login() {
     setError("");
     try {
       await logIn(values.email, values.password);
-      navigate("/home");
+
+      console.log(values);
+
+      // if (values.type == "looking to employ") {
+      //   navigate("/recruiterhome");
+      // } else {
+      //   navigate("/home");
+      // }
     } catch (e) {
       setError(e.message);
       console.log(error);

@@ -1,7 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { db } from "../firebase";
 // import {collection,addDoc} from 'firebase/firestore'
-import { collection, addDoc } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 
 const jobsCollectionRef = collection(db, "jobs");
 
@@ -15,9 +21,9 @@ export const JobSlice = createSlice({
   name: "jobs",
   initialState: initialState,
   reducers: {
-    addJob: async (state, action) => {
+    addJob: (state, action) => {
       try {
-        await addDoc(jobsCollectionRef, action.payload);
+        addDoc(jobsCollectionRef, action.payload);
       } catch (err) {
         console.log(err);
       }
@@ -31,12 +37,25 @@ export const JobSlice = createSlice({
       }
     },
 
+    getJobs: (state, action) => {
+      state.jobs = action.payload;
+    },
+
     editJob: (state, action) => {},
 
-    deleteJob: (state, action) => {},
+    deleteJob: (state, action) => {
+      console.log(action.payload);
+      try {
+        const jobDoc = doc(db, "jobs", action.payload);
+        deleteDoc(jobDoc);
+      } catch (err) {
+        console.log(err);
+      }
+    },
   },
 });
 
-export const { addJob, editJob, deleteJob, addUser } = JobSlice.actions;
+export const { addJob, editJob, deleteJob, addUser, getJobs } =
+  JobSlice.actions;
 
 export default JobSlice.reducer;

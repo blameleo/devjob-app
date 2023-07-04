@@ -10,22 +10,25 @@ import Leftpane from "../components/Leftpane";
 
 export default function RecruiterDashboard() {
   return (
-    <div className="bg-gray-300  pb-15">
-      <div className="grid  grid-cols-12 w-12/12 h-screen">
+    <div className="bg-gray-300  pb-15 ">
+      <div className="grid  grid-cols-12 w-12/12 ">
         <Leftpane />
 
-        <div className=" col-span-9 ">
+        <div className=" col-span-10 ">
           <div className=" h-[50px] px-5 bg-white border">
-            <div className="flex items-center justify-between  h-full">
-              <h1 className="font-bold"> Candidate List</h1>
+            <div className="flex items-center sm:justify-between justify-end  h-full">
+              <h1 className="font-bold hidden sm:block text-sm">
+                {" "}
+                Candidate List
+              </h1>
 
-              <div className="flex items-center">
-                <h2 className="pr-5">John Blackwood</h2>
+              <div className="flex items-center ">
+                <h2 className="pr-5 text-sm">John Blackwood</h2>
                 <AiOutlineLogout className="text-xl" />
               </div>
             </div>
           </div>
-          <div className=" h-[700px] m-5 bg-white rounded-lg p-2">
+          <div className="  m-5 bg-white rounded-lg p-2">
             <Routes>
               <Route path="recruiterhome/addjobs" element={<Addjobs />} />
               <Route path="recruiterhome/candidates" element={<Candidates />} />

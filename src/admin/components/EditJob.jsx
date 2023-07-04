@@ -31,7 +31,7 @@ const style = {
   overflow: "scroll",
 };
 
-export default function FormModal({ open, handleClose, handleFetchJobs }) {
+export default function EditJob({ modalopen, handleFetchJobs, handleClose }) {
   const dispatch = useDispatch();
   const [imageUpload, setImageUpload] = useState(null);
   const [progress, setProgress] = useState(0);
@@ -121,13 +121,13 @@ export default function FormModal({ open, handleClose, handleFetchJobs }) {
 
   return (
     <Modal
-      open={open}
+      open={modalopen}
       onClose={handleClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        <h1 className="text-white text-center text-xl font-bold">Post a job</h1>
+        <h1 className="text-white text-center text-xl font-bold">Edit a job</h1>
         {/* <Formik initialValues={initialValues} onSubmit={handleSubmit}> */}
         {/* {(formProps) => { */}
         {/* <FormikProvider value={formik}> */}
