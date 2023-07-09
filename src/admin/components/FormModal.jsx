@@ -35,6 +35,7 @@ export default function FormModal({ open, handleClose, handleFetchJobs }) {
   const dispatch = useDispatch();
   const [imageUpload, setImageUpload] = useState(null);
   const [progress, setProgress] = useState(0);
+  const [dataArray, setDataArray] = useState([]);
   const [formData, setFormData] = useState({
     company: "",
     position: "",
@@ -45,25 +46,78 @@ export default function FormModal({ open, handleClose, handleFetchJobs }) {
     description: "",
     requirements: {
       content: "",
-      items: [],
+      items1: "",
+      items2: "",
+      items3: "",
+      items4: "",
+      items5: "",
     },
     role: {
       content: "",
-      items: [],
+      content: "",
+      items1: "",
+      items2: "",
+      items3: "",
+      items4: "",
+      items5: "",
     },
   });
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    if (e.target.name.includes(".")) {
+      const [parentProp, childProp] = e.target.name.split(".");
+
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [parentProp]: {
+          ...prevFormData[parentProp],
+          [childProp]: e.target.value,
+        },
+      }));
+    } else setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleUpload = (e) => {
     setImageUpload(e.target.files[0]);
   };
 
+  const resetForm = () => {
+    setFormData({
+      company: "",
+      position: "",
+      location: "",
+      logoUrl: "",
+      logoBackground: "#6590D5",
+      website: "",
+      description: "",
+      requirements: {
+        content: "",
+        items1: "",
+        items2: "",
+        items3: "",
+        items4: "",
+        items5: "",
+      },
+      role: {
+        content: "",
+        content: "",
+        items1: "",
+        items2: "",
+        items3: "",
+        items4: "",
+        items5: "",
+      },
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    const storageRef = ref(storage, `images/${imageUpload.name}`);
+    resetForm();
+    console.log(imageUpload);
+    const storageRef = ref(
+      storage,
+      `images/${imageUpload ? imageUpload.name : null}`
+    );
     const uploadImage = uploadBytesResumable(storageRef, imageUpload);
     uploadImage.on(
       "state_changed",
@@ -80,44 +134,19 @@ export default function FormModal({ open, handleClose, handleFetchJobs }) {
         getDownloadURL(uploadImage.snapshot.ref).then((url) => {
           // const jobRef = collection(db, "jobs");
           handleClose();
-          dispatch(addJob({ ...formData, logoUrl: url }));
+          dispatch(
+            addJob({
+              ...formData,
+              logoUrl: url,
+              timestamp: new Date().getTime(),
+            })
+          );
           handleFetchJobs();
         });
       }
     );
     console.log(formData);
   };
-  // const formik = useFormik({
-  //   initialValues: {
-  //     company: "",
-  //     position: "",
-  //     location: "",
-  //     logoBackground: "#6590D5",
-  //     website: "",
-  //     description: "",
-  //     requirements: {
-  //       content: "",
-  //       items: [],
-  //     },
-  //     role: {
-  //       content: "",
-  //       items: [],
-  //     },
-  //   },
-  // onSubmit: (values, { resetForm }) => {
-  //   setImageUrl("");
-  //   const newVals = { ...values, logoUrl: imageUrl, image: imageUpload.name };
-  //   dispatch(addJob(newVals));
-  //   // handleUpload();
-
-  //   handleFetchJobs();
-  //   handleClose();
-  //   resetForm();
-
-  //   console.log(newVals);
-  //   console.log(imageUrl);
-  // },
-  // });
 
   return (
     <Modal
@@ -128,9 +157,7 @@ export default function FormModal({ open, handleClose, handleFetchJobs }) {
     >
       <Box sx={style}>
         <h1 className="text-white text-center text-xl font-bold">Post a job</h1>
-        {/* <Formik initialValues={initialValues} onSubmit={handleSubmit}> */}
-        {/* {(formProps) => { */}
-        {/* <FormikProvider value={formik}> */}
+
         <form
           className="space-y-4 md:space-y-6 "
           action="#"
@@ -190,7 +217,26 @@ export default function FormModal({ open, handleClose, handleFetchJobs }) {
               required=""
             />
           </div>
-          ç
+
+          <div>
+            <label
+              htmlFor="website"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              website
+            </label>
+            <input
+              type="website"
+              name="website"
+              onChange={(e) => handleChange(e)}
+              value={formData.website}
+              id="location"
+              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="location"
+              required=""
+            />
+          </div>
+
           <div>
             <label
               htmlFor="description"
@@ -225,22 +271,22 @@ export default function FormModal({ open, handleClose, handleFetchJobs }) {
             />
             <span className="text-white">{progress}</span>
           </div>
-          {/* <div>
-              <label
-                htmlFor="logoBackground"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Choose your logo background color
-              </label>
-              <input
-                type="color"
-                name="logoBackground"
-                value={formik.values.logoBackground}
-                id="logoBackground"
-                onChange={formik.handleChange("logoBackground")}
-              />
-            </div> */}
-          {/* <div>
+          <div>
+            <label
+              htmlFor="logoBackground"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              Choose your logo background color
+            </label>
+            <input
+              type="color"
+              name="logoBackground"
+              value={formData.logoBackground}
+              id="logoBackground"
+              onChange={(e) => handleChange("logoBackground")}
+            />
+          </div>
+          <div>
             <label
               htmlFor="requirements.content"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -256,96 +302,103 @@ export default function FormModal({ open, handleClose, handleFetchJobs }) {
               placeholder="requirement content"
               required=""
             />
-          </div> */}
+          </div>
           <div>
-            {/* <FieldArray
-                type="text"
-                name="requirements.items"
-                render={(arrayHelpers) => (
-                  <div>
-                    <button
-                      type="button"
-                      className="text-white bg-primary px-2 mb-4 rounded-lg py-1 flex items-center"
-                      onClick={() => arrayHelpers.push()}
-                    >
-                      click to add job requirements{" "}
-                      <IoIosAddCircle className="ml-3" />
-                    </button>
-                    {formik.values.requirements.items.map((item, i) => (
-                      <div
-                        key={i}
-                        className="flex justify-between items-center"
-                      >
-                        <textarea
-                          type="text"
-                          name={`requirements.items[${i}]`}
-                          value={formik.values.requirements.items[i]}
-                          onChange={formik.handleChange}
-                          className="bg-gray-50 border min-h-[10px]  border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-[500px] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        />
-                        <IoIosRemoveCircle
-                          type="button"
-                          className="text-red-500 text-2xl cursor-pointer"
-                          onClick={() => arrayHelpers.remove(i)}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                )}
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="role.content"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                role content
-              </label>
-              <textarea
-                type="text"
-                name="role.content"
-                onChange={formik.handleChange}
-                value={formik.values.role.content}
-                className="bg-gray-50 border min-h-[100px] border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="role content"
-                required=""
-              />
-            </div>
-            <div>
-              <FieldArray
-                type="text"
-                name="role.items"
-                render={(arrayHelpers) => (
-                  <div>
-                    <button
-                      type="button"
-                      className="text-white bg-primary px-2 mb-4 rounded-lg py-1 flex items-center"
-                      onClick={() => arrayHelpers.push()}
-                    >
-                      click to add job roles <IoIosAddCircle className="ml-3" />
-                    </button>
-                    {formik.values.role.items.map((item, i) => (
-                      <div
-                        key={i}
-                        className="flex justify-between items-center"
-                      >
-                        <textarea
-                          type="text"
-                          name={`role.items[${i}]`}
-                          value={formik.values.role.items[i]}
-                          onChange={formik.handleChange}
-                          className="bg-gray-50 border min-h-[10px]  border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-[500px] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        />
-                        <IoIosRemoveCircle
-                          type="button"
-                          className="text-red-500 text-2xl cursor-pointer"
-                          onClick={() => arrayHelpers.remove(i)}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                )}
-              /> */}
+            <label className="text-white" htmlFor="">
+              requirement items
+            </label>
+            <input
+              type="text"
+              name="requirements.items1"
+              value={formData.requirements.items1}
+              onChange={(e) => handleChange(e)}
+              className="bg-gray-50 border my-1 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            />
+            <input
+              type="text"
+              name="requirements.items2"
+              value={formData.requirements.items2}
+              onChange={(e) => handleChange(e)}
+              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            />
+            <input
+              type="text"
+              name="requirements.items3"
+              value={formData.requirements.items3}
+              onChange={(e) => handleChange(e)}
+              className="bg-gray-50 border my-1 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            />
+            <input
+              type="text"
+              name="requirements.items4"
+              value={formData.requirements.items4}
+              onChange={(e) => handleChange(e)}
+              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            />
+            <input
+              type="text"
+              name="requirements.items5"
+              value={formData.requirements.items5}
+              onChange={(e) => handleChange(e)}
+              className="bg-gray-50 my-1 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="role.content"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              role content
+            </label>
+            <textarea
+              type="text"
+              name="role.content"
+              onChange={(e) => handleChange(e)}
+              value={formData.role.content}
+              className="bg-gray-50 border min-h-[100px] border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="requirement content"
+              required=""
+            />
+          </div>
+          <div>
+            <label className="text-white" htmlFor="">
+              role items
+            </label>
+            <input
+              type="text"
+              name="role.items1"
+              value={formData.role.items1}
+              onChange={(e) => handleChange(e)}
+              className="bg-gray-50 border my-1 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            />
+            <input
+              type="text"
+              name="role.items2"
+              value={formData.role.items2}
+              onChange={(e) => handleChange(e)}
+              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            />
+            <input
+              type="text"
+              name="role.items3"
+              value={formData.role.items3}
+              onChange={(e) => handleChange(e)}
+              className="bg-gray-50 border my-1 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            />
+            <input
+              type="text"
+              name="role.items4"
+              value={formData.role.items4}
+              onChange={(e) => handleChange(e)}
+              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            />
+            <input
+              type="text"
+              name="role.items5"
+              value={formData.role.items5}
+              onChange={(e) => handleChange(e)}
+              className="bg-gray-50 my-1 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            />
           </div>
           <div className="flex justify-center">
             <button
@@ -357,8 +410,6 @@ export default function FormModal({ open, handleClose, handleFetchJobs }) {
           </div>
           <div className="flex justify-center"></div>
         </form>
-        {/* </FormikProvider> */};{/* }} */}
-        {/* </Formik> */}
       </Box>
     </Modal>
   );

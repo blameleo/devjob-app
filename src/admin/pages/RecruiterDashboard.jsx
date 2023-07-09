@@ -28,7 +28,7 @@ export default function RecruiterDashboard() {
               </div>
             </div>
           </div>
-          <div className="  m-5 bg-white rounded-lg p-2">
+          <div className="min-h-screen m-3 bg-white rounded-lg p-2">
             <Routes>
               <Route path="recruiterhome/addjobs" element={<Addjobs />} />
               <Route path="recruiterhome/candidates" element={<Candidates />} />

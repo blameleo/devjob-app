@@ -11,9 +11,8 @@ const jobsCollectionRef = collection(db, "jobs");
 
 export default function Addjobs() {
   const [open, setOpen] = useState(false);
-  const [editModal, setEditOpen] = useState(false);
-  const openEdit = () => setEditOpen(true);
-  const closeEdit = () => setEditOpen(false);
+  const [editModal, setEditModal] = useState(false);
+  const [selectedJob, setSelectedJob] = useState(null);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -34,7 +33,6 @@ export default function Addjobs() {
           // logourl: imageUrl,
         };
       });
-      // console.log(filteredJobs);
 
       dispatch(getJobs(filteredJobs));
     } catch (err) {
@@ -45,6 +43,16 @@ export default function Addjobs() {
   useEffect(() => {
     getJobsList();
   }, []);
+
+  const handleEditClick = (item) => {
+    setSelectedJob(item);
+    setEditModal(true);
+  };
+
+  const handleEditClose = () => {
+    setEditModal(false);
+    setSelectedJob(null);
+  };
 
   return (
     <div className="min-h-screen">
@@ -62,44 +70,49 @@ export default function Addjobs() {
       />
 
       <div className=" grid place-items-center sm:grid-cols-2 md:grid-cols-5 gap-1 mt-5">
-        {state.jobs?.map((job, i) => {
+        {state.jobs?.map((item) => {
           return (
             <div
               className="text-center border w-[200px] h-[260px] mb-10 bg-slate-100 rounded-lg p-2 py-4 shadow-lg"
-              key={i}
+              key={item.id}
             >
               <div className="">
-                <EditJob
-                  modalopen={editModal}
-                  handleFetchJobs={getJobsList}
-                  handleClose={closeEdit}
-                />
                 <div className="flex justify-center">
                   <img
-                    style={{ backgroundColor: `${job.logoBackground}` }}
+                    style={{ backgroundColor: `${item.logoBackground}` }}
                     className="border border-black w-[100px] h-[100px] rounded-full"
-                    src={job.logoUrl}
+                    src={item.logoUrl}
                     alt=""
                   />
                 </div>
 
                 <div>
-                  <h1 className="font-bold">{job.position}</h1>
-                  <h1>{job.company}</h1>
+                  <h1 className="font-bold">{item.position}</h1>
+                  <h1>{item.company}</h1>
                 </div>
               </div>
-              <p>{job.location}</p>
+              <p>{item.location}</p>
+
               <div className="flex justify-center">
                 <button
-                  onClick={() => openEdit()}
+                  onClick={() => handleEditClick(item)}
                   className="hover:bg-light_primary bg-primary p-3 rounded-lg font-semibold text-white "
                 >
                   edit
                 </button>
+
+                {selectedJob && (
+                  <EditJob
+                    modalopen={editModal}
+                    handleFetchJobs={getJobsList}
+                    handleClose={handleEditClose}
+                    job={selectedJob}
+                  />
+                )}
+
                 <button
                   onClick={() => {
-                    dispatch(deleteJob(job.id));
-                    getJobsList();
+                    dispatch(deleteJob(item.id));
                   }}
                   className="ml-3 hover:bg-light_primary bg-red-500 p-3 rounded-lg font-semibold text-white "
                 >
