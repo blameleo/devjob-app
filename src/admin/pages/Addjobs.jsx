@@ -80,7 +80,7 @@ export default function Addjobs() {
           console.log(hours);
           return (
             <div
-              className="text-center border w-[200px] h-[280px] mb-10 bg-slate-100 rounded-lg p-2 py-4 shadow-lg"
+              className="text-center border w-[220px] h-[280px] mb-10 bg-slate-100 rounded-lg p-2 py-4 shadow-lg"
               key={item.id}
             >
               <div className="">
@@ -90,7 +90,7 @@ export default function Addjobs() {
                   }}
                   className="flex justify-center items-center border mx-auto   w-20 h-20 rounded-full"
                 >
-                  <img className="w-12 h-12" src={item.logoUrl} alt="" />
+                  <img className="" src={item.logoUrl} alt="" />
                 </div>
 
                 <div>
@@ -129,7 +129,7 @@ export default function Addjobs() {
               <span className="text-sm text-gray-500">
                 posted:{" "}
                 {minutes < 60
-                  ? `${minutes} ming ago`
+                  ? `${minutes} mins ago`
                   : minutes > 60
                   ? `${hours} hr ago `
                   : null}

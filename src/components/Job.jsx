@@ -33,7 +33,7 @@ const Job = ({ data }) => {
       <div className="flex pt-6 text-gray-500 w-40 justify-between ">
         <p>
           {minutes < 60
-            ? `${minutes} ming ago`
+            ? `${minutes} mins ago`
             : minutes > 60
             ? `${hours} hr ago `
             : null}
