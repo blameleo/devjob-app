@@ -42,11 +42,11 @@ export default function Signup() {
     console.log(values);
     resetForm();
     setError("");
-    dispatch(addUser(values));
 
     try {
       await createUser(values.email, values.password);
-      console.log(user);
+      //  console.log(user);
+      dispatch(addUser(values));
       setInfo("user created succesfully");
       setTimeout(() => {
         navigate("/login");
@@ -85,14 +85,11 @@ export default function Signup() {
                     </label>
                     <Field
                       name="type"
-                      defaultValue="individual"
                       as="select"
                       className="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
                     >
-                      <option defaultValue="individual">
-                        looking for work
-                      </option>
-                      <option defaultValue="employer">looking to employ</option>
+                      <option value="individual">looking for work</option>
+                      <option value="employer">looking to employ</option>
                     </Field>
                   </div>
                   <div>
@@ -211,12 +208,12 @@ export default function Signup() {
                   <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                     Already have an account?{" "}
                     <Link to="/login">
-                      <a
+                      <button
                         href="#"
                         className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                       >
                         Sign In
-                      </a>
+                      </button>
                     </Link>
                   </p>
                   {error ? (

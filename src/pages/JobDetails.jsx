@@ -4,18 +4,29 @@ import data from "../data.json";
 import Header from "../components/Header";
 import { ReactSVG } from "react-svg";
 import { ThemeToggler } from "../context/ThemeContext";
+import { useSelector } from "react-redux";
 
 const JobDetails = () => {
   const { id } = useParams();
-  const jobId = parseInt(id);
+  const jobId = id;
+
+  console.log(jobId);
+
+  const state = useSelector((state) => {
+    return state.jobs;
+  });
+
+  console.log(state.jobs);
 
   const { darkMode } = ThemeToggler();
 
   return (
     <div className={darkMode ? "bg-midnight " : "bg-gray-100 "}>
       <Header />
-      {data.map((item, index) => {
-        if (item.id === jobId) {
+      {state.jobs?.map((item, index) => {
+        if (item.id == jobId) {
+          console.log(item.requirements.content);
+
           return (
             <div key={index}>
               <div
@@ -29,7 +40,7 @@ const JobDetails = () => {
                   className="mx-auto sm:static relative w-20 h-20 -top-10  sm:rounded-none rounded-lg sm:mx-0 sm:w-40 sm:h-32 flex justify-center items-center"
                   style={{ backgroundColor: `${item.logoBackground}` }}
                 >
-                  <ReactSVG src={item?.logo} />
+                  <img src={item.logoUrl} />
                 </div>
                 <div
                   className={
@@ -71,9 +82,9 @@ const JobDetails = () => {
                 }
               >
                 <div className="flex pt-6 text-gray-500 w-36 justify-between pb-3">
-                  <p>{item.postedAt}</p>
+                  <p></p>
                   <span className="font-black">.</span>
-                  <p>{item.contract}</p>
+                  <p></p>
                 </div>
                 <div className="flex flex-col sm:flex-row justify-between pb-10">
                   <div className="pb-8 sm:pb-0">
@@ -108,13 +119,15 @@ const JobDetails = () => {
                 <p className="pb-8 text-gray-500">
                   {item.requirements.content}
                 </p>
-                {item.requirements.items.map((point) => {
-                  return (
-                    <ul className="py-2 text-gray-500 pl-3 list-disc marker:text-primary">
-                      <li className=" ">{point}</li>
-                    </ul>
-                  );
-                })}
+
+                <ul className="py-2 text-gray-500 pl-3 list-disc marker:text-primary">
+                  <li className=" ">{item.requirements.items1}</li>
+                  <li className=" ">{item.requirements.items2}</li>
+
+                  <li className=" ">{item.requirements.items3}</li>
+                  <li className=" ">{item.requirements.items4}</li>
+                  <li className=" ">{item.requirements.items5}</li>
+                </ul>
 
                 <h1
                   className={
@@ -126,13 +139,15 @@ const JobDetails = () => {
                   What you will do
                 </h1>
                 <p className="pb-8 text-gray-500">{item.role.content}</p>
-                {item.role.items.map((point) => {
-                  return (
-                    <ul className="py-2 text-gray-500 pl-3 list-decimal marker:text-primary">
-                      <li className=" ">{point}</li>
-                    </ul>
-                  );
-                })}
+
+                <ul className="py-2 text-gray-500 pl-3 list-disc marker:text-primary">
+                  <li className=" ">{item.role.items1}</li>
+                  <li className=" ">{item.role.items2}</li>
+
+                  <li className=" ">{item.role.items3}</li>
+                  <li className=" ">{item.role.items4}</li>
+                  <li className=" ">{item.role.items5}</li>
+                </ul>
               </div>
 
               <div
@@ -147,7 +162,7 @@ const JobDetails = () => {
                 >
                   <div className="hidden sm:block">
                     <h1>{item.position}</h1>
-                    <p>So Digital Inc.</p>
+                    <p>{item.company}</p>
                   </div>
 
                   <button className="hover:bg-light_primary bg-primary p-3 rounded-lg font-semibold text-white w-full sm:w-32">

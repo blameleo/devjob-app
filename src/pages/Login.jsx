@@ -1,29 +1,49 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { UserAuth } from "../context/AuthContext";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../firebase";
+import { useSelector, useDispatch } from "react-redux";
+import { getUsers } from "../redux/JobSlice";
 
 export default function Login() {
   const [error, setError] = useState("");
   const [info, setInfo] = useState("");
+  const [data, setData] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  // const state = useSelector((state) => {
+  //   return state.users;
+  // });
 
   const initialValues = {
     email: "",
     password: "",
+    type: "",
   };
 
   const { logIn } = UserAuth();
 
   const handleLogin = async (values, { resetForm }) => {
+    console.log(values);
     setError("");
     try {
       await logIn(values.email, values.password);
 
       console.log(values);
-
+      data.map((user) => {
+        console.log(user);
+        if (values.email === user.email && user.type == "individual") {
+          navigate("/home");
+        } else if (values.email === user.email && user.type == "employer") {
+          navigate("/recruiterhome/recruiterhome/dashboard");
+        }
+      });
+      // if (values.password === "looking for work") {
+      //   navigate("/home");
+      // }
       // if (values.type == "looking to employ") {
       //   navigate("/recruiterhome");
       // } else {
@@ -34,6 +54,27 @@ export default function Login() {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getDocs(collection(db, "users"));
+      // console.log(data);
+
+      const filteredUsers = data.docs.map((doc) => {
+        return {
+          ...doc.data(),
+        };
+      });
+
+      console.log(filteredUsers);
+      dispatch(getUsers(filteredUsers));
+      setData(filteredUsers);
+    };
+
+    fetchData();
+  }, []);
+
+  console.log(data);
   return (
     <section className="bg-gray-50 dark:bg-gray-100">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen lg:py-0">

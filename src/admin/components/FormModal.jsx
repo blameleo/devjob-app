@@ -36,10 +36,13 @@ export default function FormModal({ open, handleClose, handleFetchJobs }) {
   const [imageUpload, setImageUpload] = useState(null);
   const [progress, setProgress] = useState(0);
   const [dataArray, setDataArray] = useState([]);
+  const [startTime, setStartTime] = useState(null);
+  const [endTime, setEndTime] = useState(null);
   const [formData, setFormData] = useState({
     company: "",
     position: "",
     location: "",
+    contract: "",
     logoUrl: "",
     logoBackground: "#6590D5",
     website: "",
@@ -76,6 +79,13 @@ export default function FormModal({ open, handleClose, handleFetchJobs }) {
       }));
     } else setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  const start = new Date();
+  const end = new Date();
+  const timeDiff = start.getTime();
+  const seconds = Math.floor(timeDiff / 1000);
+  const minutes = Math.floor(seconds / 60);
+  console.log(minutes);
 
   const handleUpload = (e) => {
     setImageUpload(e.target.files[0]);
@@ -138,7 +148,7 @@ export default function FormModal({ open, handleClose, handleFetchJobs }) {
             addJob({
               ...formData,
               logoUrl: url,
-              timestamp: new Date().getTime(),
+              timestamp: start.getTime(),
             })
           );
           handleFetchJobs();
@@ -199,6 +209,16 @@ export default function FormModal({ open, handleClose, handleFetchJobs }) {
               value={formData.position}
             />
           </div>
+          <div className="flex flex-col">
+            <label htmlFor="contract" className="text-white">
+              contract
+            </label>
+            <select name="contract" onChange={(e) => handleChange(e)} id="">
+              <option value="Part time">Part Time</option>
+              <option value="Full Time">Full Time</option>
+            </select>
+          </div>
+
           <div>
             <label
               htmlFor="location"
@@ -283,7 +303,7 @@ export default function FormModal({ open, handleClose, handleFetchJobs }) {
               name="logoBackground"
               value={formData.logoBackground}
               id="logoBackground"
-              onChange={(e) => handleChange("logoBackground")}
+              onChange={(e) => handleChange(e)}
             />
           </div>
           <div>

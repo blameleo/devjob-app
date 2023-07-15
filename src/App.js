@@ -10,10 +10,10 @@ import { getJobs } from "./redux/JobSlice";
 import { useDispatch } from "react-redux";
 
 import { useEffect } from "react";
+const jobsCollectionRef = collection(db, "jobs");
 
 function App() {
   const dispatch = useDispatch();
-  const jobsCollectionRef = collection(db, "jobs");
   const getJobsList = async () => {
     try {
       const data = await getDocs(jobsCollectionRef);
@@ -35,7 +35,6 @@ function App() {
   useEffect(() => {
     getJobsList();
   }, []);
-
   return (
     <Router>
       <Routes>
@@ -45,7 +44,7 @@ function App() {
         <Route path="/jobdetails/:id" element={<JobDetails />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/recruiterhome/*" element={<RecruiterDashboard />} />
+        <Route path="/recruiterhome//*" element={<RecruiterDashboard />} />
       </Routes>
     </Router>
   );

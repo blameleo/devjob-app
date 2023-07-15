@@ -13,7 +13,7 @@ export const AuthContextProvider = ({ children }) => {
   const createUser = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
-  const logIn = (email, password) => {
+  const logIn = async (email, password) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
   const logOut = () => {

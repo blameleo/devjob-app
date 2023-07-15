@@ -1,31 +1,17 @@
 import React, { useEffect, useState } from "react";
 import data from "../data.json";
 import Job from "./Job";
-import { db } from "../firebase";
-import {
-  Query,
-  QuerySnapshot,
-  collection,
-  onSnapshot,
-} from "firebase/firestore";
+import { useSelector } from "react-redux";
 
-const Jobs = ({ setJobs, setSearchResults, searchResults }) => {
-  useEffect(() => {
-    setJobs(data);
-    setSearchResults(data);
-  }, []);
-
-  // useEffect(() => {
-  //   const q = Query(collection(db, "todos"));
-  //   const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
-  //     let jobs = [];
-  //     QuerySnapshot;
-  //   });
-  // }, []);
+const Jobs = () => {
+  const [searchResults, setSearchResults] = useState([]);
+  const state = useSelector((state) => {
+    return state.jobs;
+  });
 
   return (
-    <div className="grid sm:grid-cols-2 lg:grid-cols-3   w-10/12 mx-auto  ">
-      {searchResults.map((job, index) => {
+    <div className="grid sm:grid-cols-2 lg:grid-cols-3 min-h-screen  w-10/12 mx-auto  ">
+      {state.jobs?.map((job, index) => {
         return <Job key={index} data={job} />;
       })}
     </div>

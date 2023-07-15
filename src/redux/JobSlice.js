@@ -9,6 +9,7 @@ import {
   deleteDoc,
   doc,
 } from "firebase/firestore";
+import { useEffect } from "react";
 
 const jobsCollectionRef = collection(db, "jobs");
 
@@ -16,6 +17,7 @@ const usersCollectionRef = collection(db, "users");
 
 const initialState = {
   jobs: null,
+  users: "",
 };
 
 export const JobSlice = createSlice({
@@ -30,12 +32,20 @@ export const JobSlice = createSlice({
       }
     },
 
-    addUser: async (state, action) => {
+    addUser: (state, action) => {
+      console.log(action.payload);
+      state.users = [...state.users, action.payload];
       try {
-        await addDoc(usersCollectionRef, action.payload);
+        addDoc(usersCollectionRef, action.payload);
       } catch (err) {
         console.log(err);
       }
+    },
+
+    getUsers: (state, action) => {
+      console.log(action);
+      state.users = action.payload;
+      console.log(state.users);
     },
 
     getJobs: (state, action) => {
@@ -66,7 +76,7 @@ export const JobSlice = createSlice({
   },
 });
 
-export const { addJob, editJob, deleteJob, addUser, getJobs } =
+export const { addJob, editJob, deleteJob, addUser, getJobs, getUsers } =
   JobSlice.actions;
 
 export default JobSlice.reducer;

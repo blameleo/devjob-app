@@ -13,7 +13,7 @@ export default function Leftpane() {
         <Tabs
           icon={<AiFillHome className="text-violet-700" />}
           text="Dashboard"
-          link="recruiterhome/"
+          link="recruiterhome/dashboard"
         />
         <Tabs
           icon={<FaNewspaper className="text-violet-700" />}

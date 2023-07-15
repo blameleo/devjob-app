@@ -7,12 +7,19 @@ import { Link } from "react-router-dom";
 const Job = ({ data }) => {
   const { darkMode } = ThemeToggler();
   // console.log(test);
+  console.log(data);
+  const start = data.timestamp;
+  const end = new Date();
+  const timeDiff = end.getTime() - start;
+  const seconds = Math.floor(timeDiff / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
   return (
     <div
       className={
         darkMode
-          ? "bg-dark_blue m-3 rounded-xl  relative  p-8 mb-10 "
-          : "bg-white m-3 rounded-xl  relative  p-8 mb-10 "
+          ? "bg-dark_blue m-3 rounded-xl  relative h-[250px] p-8 mb-10 "
+          : "bg-white m-3 rounded-xl  h-[250px] relative  p-8 mb-10 "
       }
     >
       {/* <ReactSVG src={test}/> */}
@@ -21,10 +28,16 @@ const Job = ({ data }) => {
         style={{ backgroundColor: `${data.logoBackground}` }}
       >
         {/* <img className='border text-2xl' src={data.logo} alt="" /> */}
-        <ReactSVG src={data.logo} />
+        <img src={data.logoUrl} />
       </div>
-      <div className="flex pt-6 text-gray-500 w-36 justify-between">
-        <p>{data.postedAt}</p>
+      <div className="flex pt-6 text-gray-500 w-40 justify-between ">
+        <p>
+          {minutes < 60
+            ? `${minutes} ming ago`
+            : minutes > 60
+            ? `${hours} hr ago `
+            : null}
+        </p>
         <span className="font-black">.</span>
         <p>{data.contract}</p>
       </div>

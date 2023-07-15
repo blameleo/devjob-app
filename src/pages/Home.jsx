@@ -14,15 +14,10 @@ export default function Home() {
   return (
     <div>
       <div className={darkMode ? "bg-midnight " : "bg-gray-100 "}>
-        <Header setSearchResults={setSearchResults} jobs={jobs} />
-        <Searchbar setSearchResults={setSearchResults} jobs={jobs} />
+        <Header setSearchResults={setSearchResults} />
+        <Searchbar setSearchResults={setSearchResults} />
 
-        <Jobs
-          setSearchResults={setSearchResults}
-          setJobs={setJobs}
-          jobs={jobs}
-          searchResults={searchResults}
-        />
+        <Jobs />
         <div className=" flex justify-center ">
           <button className="hover:bg-light_primary bg-primary p-3 rounded-lg font-semibold text-white ">
             Load more
