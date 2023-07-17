@@ -5,8 +5,8 @@ import { UserAuth } from "../context/AuthContext";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
-import { useSelector, useDispatch } from "react-redux";
-import { getUsers } from "../redux/JobSlice";
+import { useDispatch } from "react-redux";
+import { getUsers } from "../redux/UserSlice";
 
 export default function Login() {
   const [error, setError] = useState("");

@@ -5,13 +5,17 @@ import { UserAuth } from "../context/AuthContext";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
-import { addUser } from "../redux/JobSlice";
+// import { addUser } from "../redux/JobSlice";
+import { addUser } from "../redux/UserSlice";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Signup() {
   const [error, setError] = useState("");
   const [info, setInfo] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const notify = () => toast("user created succesfully");
 
   const initialValues = {
     type: "individual",
@@ -40,14 +44,17 @@ export default function Signup() {
 
   const handleSubmit = async (values, { resetForm }) => {
     console.log(values);
+
     resetForm();
     setError("");
 
     try {
       await createUser(values.email, values.password);
       //  console.log(user);
+      notify();
       dispatch(addUser(values));
       setInfo("user created succesfully");
+
       setTimeout(() => {
         navigate("/login");
       }, 3000);
@@ -58,6 +65,7 @@ export default function Signup() {
   };
   return (
     <section className="bg-gray-50 dark:bg-gray-200">
+      <ToastContainer />
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen lg:py-0">
         <a
           href="#"
@@ -80,6 +88,7 @@ export default function Signup() {
               {({ errors, touched }) => (
                 <Form className="flex flex-col  h-[500px] justify-between">
                   <div>
+                    <ToastContainer />
                     <label htmlFor="underline_select" className="sr-only">
                       Underline select
                     </label>

@@ -1,20 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import Box from "@mui/material/Box";
-import { IoIosRemoveCircle, IoIosAddCircle } from "react-icons/io";
+import "react-toastify/dist/ReactToastify.css";
 import Modal from "@mui/material/Modal";
-// import { useFormik, FormikProvider, FieldArray, Formik } from "formik";
 import { useDispatch } from "react-redux";
-import { v4 as uuid } from "uuid";
-import { db, storage } from "../../firebase";
-import {
-  ref,
-  uploadBytesResumable,
-  listAll,
-  getDownloadURL,
-} from "firebase/storage";
-
-import { addJob, getJobs } from "../../redux/JobSlice";
-import { collection } from "firebase/firestore";
+import { storage } from "../../firebase";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { addJob } from "../../redux/JobSlice";
 
 const style = {
   position: "absolute",
@@ -38,6 +30,7 @@ export default function FormModal({ open, handleClose, handleFetchJobs }) {
   const [dataArray, setDataArray] = useState([]);
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
+  const notify = () => toast("Wow so easy !");
   const [formData, setFormData] = useState({
     company: "",
     position: "",
@@ -122,6 +115,8 @@ export default function FormModal({ open, handleClose, handleFetchJobs }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    notify();
+
     resetForm();
     console.log(imageUpload);
     const storageRef = ref(
@@ -166,6 +161,7 @@ export default function FormModal({ open, handleClose, handleFetchJobs }) {
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
+        <ToastContainer />
         <h1 className="text-white text-center text-xl font-bold">Post a job</h1>
 
         <form

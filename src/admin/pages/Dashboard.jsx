@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getUsers } from "../../redux/JobSlice";
+// import { getUsers } from "../../redux/JobSlice";
+import { getUsers } from "../../redux/UserSlice";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
 
@@ -33,6 +34,8 @@ export default function Dashboard() {
     return state.jobs;
   });
 
+  console.log(stateTwo.jobs);
+
   return (
     <div>
       <div className="flex">
@@ -45,7 +48,9 @@ export default function Dashboard() {
         <div className="m-5 flex justify-center items-center border w-[300px] shadow-xl  rounded-lg h-[150px] bg-gradient-to-r from-green-300 via-blue-500 to-purple-600">
           <h1 className="text-white font-bold text-[40px]">
             jobs{" "}
-            <sup>{state.jobs?.length ? `${state.jobs.length}+` : null}</sup>
+            <sup>
+              {stateTwo.jobs?.length ? `${stateTwo.jobs.length}+` : null}
+            </sup>
           </h1>
         </div>
       </div>

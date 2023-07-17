@@ -34,9 +34,9 @@ const Job = ({ data }) => {
         <p>
           {minutes < 60
             ? `${minutes} mins ago`
-            : minutes > 60
-            ? `${hours} hr ago `
-            : null}
+            : minutes >= 60 && minutes < 1440
+            ? `${Math.floor(minutes / 60)} hrs ago`
+            : `${Math.floor(minutes / 1440)} days ago`}
         </p>
         <span className="font-black">.</span>
         <p>{data.contract}</p>

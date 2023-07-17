@@ -63,13 +63,15 @@ export default function Addjobs() {
           text="Post a job"
         />
       </div>
-      <FormModal
-        open={open}
-        handleClose={handleClose}
-        handleFetchJobs={getJobsList}
-      />
+      {open && (
+        <FormModal
+          open={open}
+          handleClose={handleClose}
+          handleFetchJobs={getJobsList}
+        />
+      )}
 
-      <div className=" grid place-items-center sm:grid-cols-2 md:grid-cols-5 gap-1 mt-5">
+      <div className=" grid place-items-center sm:grid-cols-2 md:grid-cols-4 gap-1 mt-5">
         {state.jobs?.map((item) => {
           const start = item.timestamp;
           const end = new Date();
@@ -77,10 +79,12 @@ export default function Addjobs() {
           const seconds = Math.floor(timeDiff / 1000);
           const minutes = Math.floor(seconds / 60);
           const hours = Math.floor(minutes / 60);
-          console.log(hours);
+
+          const days = Math.floor(hours / 24);
+          console.log(days);
           return (
             <div
-              className="text-center border w-[220px] h-[280px] mb-10 bg-slate-100 rounded-lg p-2 py-4 shadow-lg"
+              className="text-center  w-[250px] h-[300px] mb-10 bg-slate-100 rounded-lg p-2 py-4 shadow-lg"
               key={item.id}
             >
               <div className="">
@@ -94,13 +98,13 @@ export default function Addjobs() {
                 </div>
 
                 <div>
-                  <h1 className="font-bold">{item.position}</h1>
-                  <h1>{item.company}</h1>
+                  <h1 className="font-bold py-2">{item.position}</h1>
+                  <h1 className="">{item.company}</h1>
                 </div>
               </div>
-              <p>{item.location}</p>
+              <p className="text-sm py-2">{item.location}</p>
 
-              <div className="flex justify-center">
+              <div className="flex justify-center my-2">
                 <button
                   onClick={() => handleEditClick(item)}
                   className="hover:bg-light_primary bg-primary p-3 rounded-lg font-semibold text-white "
@@ -126,13 +130,13 @@ export default function Addjobs() {
                   delete
                 </button>
               </div>
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-gray-500 py-2">
                 posted:{" "}
                 {minutes < 60
                   ? `${minutes} mins ago`
-                  : minutes > 60
-                  ? `${hours} hr ago `
-                  : null}
+                  : minutes >= 60 && minutes < 1440
+                  ? `${Math.floor(minutes / 60)} hrs ago`
+                  : `${Math.floor(minutes / 1440)} days ago`}
               </span>
             </div>
           );

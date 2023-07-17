@@ -17,7 +17,7 @@ const usersCollectionRef = collection(db, "users");
 
 const initialState = {
   jobs: null,
-  users: "",
+  // users: "",
 };
 
 export const JobSlice = createSlice({
@@ -25,6 +25,7 @@ export const JobSlice = createSlice({
   initialState: initialState,
   reducers: {
     addJob: (state, action) => {
+      console.log(action.payload);
       try {
         addDoc(jobsCollectionRef, action.payload);
       } catch (err) {
@@ -32,21 +33,21 @@ export const JobSlice = createSlice({
       }
     },
 
-    addUser: (state, action) => {
-      console.log(action.payload);
-      state.users = [...state.users, action.payload];
-      try {
-        addDoc(usersCollectionRef, action.payload);
-      } catch (err) {
-        console.log(err);
-      }
-    },
+    // addUser: (state, action) => {
+    //   console.log(action.payload);
+    //   state.users = [...state.users, action.payload];
+    //   try {
+    //     addDoc(usersCollectionRef, action.payload);
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // },
 
-    getUsers: (state, action) => {
-      console.log(action);
-      state.users = action.payload;
-      console.log(state.users);
-    },
+    // getUsers: (state, action) => {
+    //   console.log(action);
+    //   state.users = action.payload;
+    //   console.log(state.users);
+    // },
 
     getJobs: (state, action) => {
       state.jobs = action.payload;
@@ -76,7 +77,6 @@ export const JobSlice = createSlice({
   },
 });
 
-export const { addJob, editJob, deleteJob, addUser, getJobs, getUsers } =
-  JobSlice.actions;
+export const { addJob, editJob, deleteJob, getJobs } = JobSlice.actions;
 
 export default JobSlice.reducer;
