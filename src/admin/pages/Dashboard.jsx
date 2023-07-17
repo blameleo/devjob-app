@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUsers } from "../../redux/UserSlice";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
+import CardBarChart from "../components/CardBarChart";
 
 export default function Dashboard() {
   const dispatch = useDispatch();
@@ -38,7 +39,7 @@ export default function Dashboard() {
 
   return (
     <div>
-      <div className="flex">
+      <div className="sm:flex justify-between">
         <div className="m-5 flex justify-center items-center w-[300px] shadow-xl  rounded-lg h-[150px] bg-gradient-to-r from-green-300 via-blue-500 to-purple-600">
           <h1 className="text-white font-bold text-[40px]">
             users{" "}
@@ -53,7 +54,17 @@ export default function Dashboard() {
             </sup>
           </h1>
         </div>
+
+        <div className="m-5 flex justify-center items-center border w-[300px] shadow-xl  rounded-lg h-[150px] bg-gradient-to-r from-green-300 via-blue-500 to-purple-600">
+          <h1 className="text-white font-bold text-[40px]">
+            applications <sup>0</sup>
+          </h1>
+        </div>
       </div>
+      {/* <div className="m-5   shadow-xl  rounded-lg h-[400px] bg-gradient-to-l from-green-200 via-blue-500 to-purple-300">
+        <h1 className="text-white text-center font-bold">forex rates</h1>
+      </div> */}
+      <CardBarChart />
     </div>
   );
 }

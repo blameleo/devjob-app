@@ -47,6 +47,7 @@ export default function EditJob({
     position: job.position,
     location: job.location,
     logoUrl: job.logoUrl,
+    contract: job.contract,
     logoBackground: "#6590D5",
     website: job.website,
     description: job.description,
@@ -112,6 +113,7 @@ export default function EditJob({
             position: newJob.position,
             location: newJob.location,
             website: newJob.website,
+            contract: newJob.contract,
             description: newJob.description,
             logoUrl: url,
             logoBackground: newJob.logoBackground,
@@ -193,6 +195,15 @@ export default function EditJob({
                 onChange={(e) => handleChange(e)}
                 value={newJob.position}
               />
+            </div>
+            <div className="flex flex-col">
+              <label htmlFor="contract" className="text-white">
+                contract
+              </label>
+              <select name="contract" onChange={(e) => handleChange(e)} id="">
+                <option value={newJob.contract}>Part Time</option>
+                <option value={newJob.contract}>Full Time</option>
+              </select>
             </div>
             <div>
               <label
